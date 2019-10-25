@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="825a405d-7458-4234-88c0-b1e9597d8406" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<wsc:config name="Literal_Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="ccdabe53-46d6-49a3-addd-e2d32e3063df" >
+		<wsc:connection wsdlLocation="soap_doc_literal.wsdl" service="registrationService" port="registrationPort" address="http://www.herongyang.com/Service/Registration12.php" />
+	</wsc:config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="5494ba2f-b0a9-4aea-88a1-6aec9fde1e2c" >
+		<http:request-connection protocol="HTTPS" host="graphical.weather.gov" port="443" />
+	</http:request-config>
+	<flow name="web-service-consumer-exampleFlow1" doc:id="94dc2b5c-330f-4b28-8b1c-100466f0e1ba" >
+		<http:listener doc:name="/parse" doc:id="8e84fd1c-767c-4338-876a-eec084b55718" config-ref="HTTP_Listener_config" path="/parse"/>
+		<parse-template doc:name="Parse Template" doc:id="7276680f-f2dd-4498-b297-ec916cb2d408" location="rpc_request.xml"/>
+		<http:request method="POST" doc:name="Request" doc:id="a4c2b56f-3a84-43ad-bb0e-aa15c272ecae" config-ref="HTTP_Request_configuration" path="/xml/SOAP_server/ndfdXMLserver.php">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Content-Type" : "text/xml; charset=utf-8",
+	"SOAPAction" : "https://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl#LatLonListZipCode"
+}]]]></http:headers>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="2aa5742e-b8cb-4506-9431-1f8d4154bdec" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="web-service-consumer-exampleFlow" doc:id="6a5f475f-2d40-4ea6-a262-c5e2554cf15d" >
+		<http:listener doc:name="/dw" doc:id="c66af29f-8a05-4728-9353-66ee60e927ba" config-ref="HTTP_Listener_config" path="/dw"/>
+		<ee:transform doc:name="Transform Message" doc:id="4816fcd1-4570-4be5-8683-4d5aa92b83da" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://schemas.xmlsoap.org/soap/envelope/
+ns ns01 https://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl
+---
+{
+	ns0#Envelope: {
+		ns0#Body: {
+			ns01#LatLonListZipCode: {
+				zipCodeList: "77401"
+			}
+		}
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="Request" doc:id="40880b49-da2c-4143-817f-7f51d9470cb3" config-ref="HTTP_Request_configuration" path="/xml/SOAP_server/ndfdXMLserver.php">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Content-Type" : "text/xml; charset=utf-8",
+	"SOAPAction" : "https://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl#LatLonListZipCode"
+}]]]></http:headers>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="1a2aa6c1-b128-420c-a85f-55a214b5f85f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
