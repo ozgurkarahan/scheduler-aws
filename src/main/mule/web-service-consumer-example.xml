@@ -22,8 +22,8 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 			<http:headers ><![CDATA[#[output application/java
 ---
 {
-	"Content-Type" : "text/xml; charset=utf-8",
-	"SOAPAction" : "https://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl#LatLonListZipCode"
+	"SOAPAction" : "https://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl#LatLonListZipCode",
+	"Content-Type" : "text/xml; charset=utf-8"
 }]]]></http:headers>
 		</http:request>
 		<ee:transform doc:name="Transform Message" doc:id="2aa5742e-b8cb-4506-9431-1f8d4154bdec" >
@@ -48,7 +48,7 @@ ns ns01 https://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl
 	ns0#Envelope: {
 		ns0#Body: {
 			ns01#LatLonListZipCode: {
-				zipCodeList: "77401"
+				zipCodeList: attributes.queryParams.zipCode
 			}
 		}
 	}
@@ -59,16 +59,21 @@ ns ns01 https://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl
 			<http:headers ><![CDATA[#[output application/java
 ---
 {
-	"Content-Type" : "text/xml; charset=utf-8",
-	"SOAPAction" : "https://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl#LatLonListZipCode"
+	"SOAPAction" : "https://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl#LatLonListZipCode",
+	"Content-Type" : "text/xml; charset=utf-8"
 }]]]></http:headers>
 		</http:request>
-		<ee:transform doc:name="Transform Message" doc:id="1a2aa6c1-b128-420c-a85f-55a214b5f85f" >
+		<ee:transform doc:name="Transform Message" doc:id="43fc88b7-6d59-4218-b692-12c8d5a6cd57" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
-output application/xml
+output application/json
+import substringBefore,substringAfter from dw::core::Strings
+var q = read(payload.Envelope.Body.LatLonListZipCodeResponse.listLatLonOut,"application/xml").dwml.latLonList
 ---
-payload]]></ee:set-payload>
+{
+    latitude: substringBefore(q,","),
+    longitude: substringAfter(q,",")
+}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 	</flow>

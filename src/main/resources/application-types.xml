@@ -4,12 +4,49 @@
     <types:type name="rpc" format="xml">
       <types:example format="xml" element="{http://schemas.xmlsoap.org/soap/envelope/}Envelope" location="rpc_request.xml"/>
     </types:type>
+    <types:type name="response" format="xml">
+      <types:example format="xml" element="{https://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl}LatLonListZipCodeResponse" location="xmlResponse.xml"/>
+    </types:type>
+    <types:type name="output" format="json">
+      <types:shape format="weave" example="examples/output-2.json"><![CDATA[%dw 2.0
+
+type output = {|
+  latitude: String, 
+  longitude: String
+|} {"example": "{\\\"latitude\\\":\\\"1\\\",\\\"longitude\\\":\\\"2\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="output1" format="json">
+      <types:shape format="weave" example="examples/output-3.json"><![CDATA[%dw 2.0
+
+type output1 = {|
+  latitude: String, 
+  longitude: String
+|} {"example": "{\\\"latitude\\\":\\\"1\\\",\\\"longitude\\\":\\\"2\\\"}"}
+
+]]></types:shape>
+    </types:type>
   </types:catalog>
   <types:enrichment select="#4816fcd1-4570-4be5-8683-4d5aa92b83da">
     <types:processor-declaration>
       <types:output-event>
         <types:message>
           <types:payload type="rpc"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#43fc88b7-6d59-4218-b692-12c8d5a6cd57">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="response"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="output1"/>
         </types:message>
       </types:output-event>
     </types:processor-declaration>
