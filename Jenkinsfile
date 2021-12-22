@@ -40,7 +40,7 @@ pipeline {
     stage('Build') {
       steps {
         withMaven(
-          mavenSettingsConfig: 'public-maven-config.xml') {
+          mavenSettingsConfig: 'regional-settings.xml') {
             sh 'mvn -B -U -e -V clean -DskipTests package'
           }
       }
@@ -49,7 +49,7 @@ pipeline {
     stage('Test') {
       steps {
 	      withMaven(
-          mavenSettingsConfig: 'public-maven-config.xml') {
+          mavenSettingsConfig: 'regional-settings.xml') {
            sh "mvn -B -Dmule.env=dev test"
        }
      }
