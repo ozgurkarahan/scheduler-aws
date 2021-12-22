@@ -15,6 +15,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="5494ba2f-b0a9-4aea-88a1-6aec9fde1e2c" >
 		<http:request-connection protocol="HTTPS" host="graphical.weather.gov" port="443" />
 	</http:request-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="0d041fc3-d0fa-40ba-bda5-f91f642de486" file="config/configuration-${mule.env}.yaml" />
 	<flow name="web-service-consumer-exampleFlow1" doc:id="94dc2b5c-330f-4b28-8b1c-100466f0e1ba" >
 		<http:listener doc:name="/parse" doc:id="8e84fd1c-767c-4338-876a-eec084b55718" config-ref="HTTP_Listener_config" path="/parse"/>
 		<parse-template doc:name="Parse Template" doc:id="7276680f-f2dd-4498-b297-ec916cb2d408" location="rpc_request.xml"/>
