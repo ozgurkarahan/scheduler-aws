@@ -40,7 +40,7 @@ pipeline {
     stage('Build') {
       steps {
         withMaven(
-          mavenSettingsConfig: 'Public/public-maven-config.xml') {
+          mavenSettingsConfig: 'public-maven-config.xml') {
             sh 'mvn -B -U -e -V clean -DskipTests package'
           }
       }

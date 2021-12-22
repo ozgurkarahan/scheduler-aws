@@ -18,7 +18,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<flow name="web-service-consumer-exampleFlow1" doc:id="94dc2b5c-330f-4b28-8b1c-100466f0e1ba" >
 		<http:listener doc:name="/parse" doc:id="8e84fd1c-767c-4338-876a-eec084b55718" config-ref="HTTP_Listener_config" path="/parse"/>
 		<parse-template doc:name="Parse Template" doc:id="7276680f-f2dd-4498-b297-ec916cb2d408" location="rpc_request.xml"/>
-		<http:request method="POST" doc:name="Request" doc:id="a4c2b56f-3a84-43ad-bb0e-aa15c272ecae" config-ref="HTTP_Request_configuration" path="/xml/SOAP_server/ndfdXMLserver.php">
+		<http:request method="POST" doc:name="Request1" doc:id="a4c2b56f-3a84-43ad-bb0e-aa15c272ecae" config-ref="HTTP_Request_configuration" path="/xml/SOAP_server/ndfdXMLserver.php">
 			<http:headers ><![CDATA[#[output application/java
 ---
 {
