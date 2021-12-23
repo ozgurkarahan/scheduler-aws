@@ -80,7 +80,7 @@ pipeline {
           }
       }
     }
-
+/*
     stage('Integration Test') {
         steps {
             sh 'sed -i -e "s/url:.*$/url: \'http:\\/\\/dev-${APPNAME}.us-e2.cloudhub.io\\/api\',/g" integration-tests/config/devx.dwl'
@@ -101,6 +101,7 @@ pipeline {
           }
         }
     }
+ */   
     stage('Deploy Production') {
         environment {
           ENVIRONMENT = 'Production'
