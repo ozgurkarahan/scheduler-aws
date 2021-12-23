@@ -70,7 +70,7 @@ pipeline {
 
     stage('Deploy Development') {
       environment {
-        ENVIRONMENT = 'Development'
+        ENVIRONMENT = 'Sandbox'
         APP_NAME = 'dev-${APPNAME}'
       }
       steps {
