@@ -8,9 +8,9 @@ pipeline {
   }
 
   environment {
-    DEPLOY_CREDS = credentials('deploy-anypoint-user')
+    DEPLOY_CREDS = credentials('zubes_anypoint_deploy')
     MULE_VERSION = '4.3.0'
-    BG = "1Platform\\Public\\CI-CD Demo"
+    BG = "PNLRFPMiddlewearandAPIintegration\\PNL RFP and Evaluation"
     WORKER = "Micro"
 
     APPNAME = "generali-openvia-mobile-customer-api"
@@ -25,8 +25,8 @@ pipeline {
         sh "echo '\"default\" : {' >> ~/.anypoint/credentials"
         sh "echo '\"username\" : \"${DEPLOY_CREDS_USR}\",' >> ~/.anypoint/credentials"
         sh "echo  '\"password\" : \"${DEPLOY_CREDS_PSW}\",' >> ~/.anypoint/credentials"
-        sh "echo '\"organization\" : \"1Platform\",' >> ~/.anypoint/credentials"
-        sh "echo '\"organizationId\" : \"b0a11a10-9a2e-4b71-b6b6-88c719e79179\",' >> ~/.anypoint/credentials"
+        sh "echo '\"organization\" : \"PNLRFPMiddlewearandAPIintegration\",' >> ~/.anypoint/credentials"
+        sh "echo '\"organizationId\" : \"4798af2f-128b-4cff-992e-130ea43f3390\",' >> ~/.anypoint/credentials"
         sh "echo  '\"environment\" : null,' >> ~/.anypoint/credentials"
         sh "echo '\"host\" : null,' >> ~/.anypoint/credentials"
         sh "echo '\"token\" : { ' >> ~/.anypoint/credentials"
@@ -76,7 +76,7 @@ pipeline {
       steps {
         withMaven(
           mavenSettingsConfig: 'regional-settings.xml') {
-            sh 'mvn -U -V -e -B -DskipTests deploy -DmuleDeploy -Dmule.version=$MULE_VERSION -Danypoint.username=$DEPLOY_CREDS_USR -Danypoint.password=$DEPLOY_CREDS_PSW -Dcloudhub.app=$APP_NAME -Dcloudhub.environment=$ENVIRONMENT -Dcloudhub.bg=$BG -Dcloudhub.worker=$WORKER -Denv.name=dev'
+            sh 'mvn -U -V -e -B -DskipTests deploy -DmuleDeploy -Dmule.version=$MULE_VERSION -Danypoint.username=$DEPLOY_CREDS_USR -Danypoint.password=$DEPLOY_CREDS_PSW -Dcloudhub.app=$APP_NAME -Dcloudhub.environment=$ENVIRONMENT -Dcloudhub.bg="$BG" -Dcloudhub.worker=$WORKER -Denv.name=dev'
           }
       }
     }
