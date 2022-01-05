@@ -13,7 +13,7 @@ pipeline {
     BG = "PNLRFPMiddlewearandAPIintegration\\PNL RFP and Evaluation"
     WORKER = "Micro"
 
-    APPNAME = "generali-openvia-mobile-customer-api"
+    APPNAME = "ozkara-mobile-customer-api"
 
     DEPLOY_BAT = "true"
   }
